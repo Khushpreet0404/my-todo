@@ -1,0 +1,82 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans Unicode';
+}
+.appDiv h1{
+    color: rgb(104, 110, 34);
+    font-weight:900;
+    font-size: 2.5rem;
+}
+.appDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    
+}
+.app{
+    background:linear-gradient(to right,rgba(37, 226, 226,1),rgba(237, 234, 40,1));
+    box-shadow: 5px 5px 15px #888888;
+    border-radius: 40px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:30px;
+    min-height: 8rem;
+    min-width:30rem;
+    padding:40px 40px;
+}
+.inp{
+    border-radius: 20px;
+    padding: 10px;
+    background:none;
+    border:none;
+    background-color: rgba(255, 255, 255, 0.323);
+     box-shadow: 5px 5px 15px #888888;
+     color: rgb(98, 98, 98);
+     font-size: 1.1rem;
+     font-weight: 600;
+}
+li{
+    list-style: none;
+}
+.todoTasks{
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    /* display: flex;
+    align-items: center;
+    justify-content:space-evenly; */
+    border-radius: 20px;
+    background-color: rgba(245, 245, 220, 0.241);
+    box-shadow: 5px 5px 15px #888888;
+    margin: 10px;
+    padding: 10px 10px;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+.itemName{
+    color:  rgb(98, 98, 98);
+}
+.circle{
+    color: #888888;
+}
+.inpform{
+    display: flex;
+    gap:15px;
+}
+.appContainer{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+}
+.complete{
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+    text-decoration-color: rgb(91, 92, 20)
+}
+.inpDel{
+    background-color: rgba(255, 255, 255, 0.2);
+}
