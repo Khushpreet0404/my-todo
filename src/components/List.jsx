@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import "./List.css";
-import {CircleCheck,Circle,Trash} from 'lucide-react'
+import { CircleCheck, Circle, Trash, Edit } from "lucide-react";
 
 const List = () => {
   const [state, setState] = useState({
     todos: [],
     task: "",
+    editId: null,
+    editTask: "",
   });
 
   console.log(state);
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (state.task.trim() === "") return;
     setState({
       ...state,
       todos: [
@@ -33,16 +36,53 @@ const List = () => {
     });
   };
 
-  const handleClick=(id)=>{
+  const handleCircleClick = (id) => {
     setState({
-      ...state, todos:state.todos.map((item)=>(item.id===id)?{...item,status:"Complete",}:item)
-    })
-  }
- const handleClickDelete=(id)=>{
-  setState({
-    ...state,todos:state.todos.filter((item)=>item.id!==id)
-  })
- }
+      ...state,
+      todos: state.todos.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              status: item.status === "Complete" ? "Pending" : "Complete",
+            }
+          : item,
+      ),
+    });
+  };
+  const handleDelete = (id) => {
+    console.log("Deleted");
+    setState({
+      ...state,
+      todos: state.todos?.filter((item) => item.id !== id),
+    });
+  };
+
+  const handleEdit = (todo) => {
+    console.log(todo.id);
+    setState({
+      ...state,
+      editId: todo.id,
+      editTask: todo.todo,
+    });
+    console.log(state);
+  };
+
+  const handleSave = () => {
+    console.log("Edit Saved");
+    const updatedTodo = state.todos.map((item) =>
+      item.id === state.editId ? { ...item, todo: state.editTask } : item,
+    );
+    if (state.editTask.trim() === "") {
+      return;
+    } else {
+      setState({
+        todos: updatedTodo,
+        task: "",
+        editId: null,
+        editTask: "",
+      });
+    }
+  };
 
   return (
     <>
@@ -59,7 +99,6 @@ const List = () => {
                   onChange={handleChange}
                   value={state.task}
                   name="taskName"
-                  required
                 />
                 <button className="inp addButton" type="submit">
                   Add to Task List
@@ -70,13 +109,62 @@ const List = () => {
               {state.todos?.map((item) => {
                 return (
                   <>
-                    <li className="todoTasks">
-                      {/* <span>{item.status}</span> */}
-                      <span className="circle">{(item.status==="Pending")?<Circle onClick={()=>handleClick(item.id)}/> : <CircleCheck onClick={()=>handleClick(item.id)}/>}</span>
-                      <span className={`${"itemName"} ${item.status==="Complete"?"complete":""}`}> {item.todo} </span>
-                      <button className="inp inpDel" onClick={()=>handleClickDelete(item.id)}><Trash/></button>
-                      <button className="inp inpUpdate" >Update</button>
-                    </li>
+                    {item.id === state.editId ? (
+                      <>
+                        <div className="editInp">
+                          <input
+                            className="inp"
+                            type="text"
+                            value={state.editTask}
+                            onChange={(e) => {
+                              setState({
+                                ...state,
+                                editTask: e.target.value,
+                              });
+                            }}
+                          />
+                          <button onClick={handleSave} className="inp">
+                            Save
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <li className="todoTasks">
+                          {/* <span>{item.status}</span> */}
+                          <span className="circle">
+                            {item.status === "Pending" ? (
+                              <Circle
+                                className="chekbox"
+                                onClick={() => handleCircleClick(item.id)}
+                              />
+                            ) : (
+                              <CircleCheck
+                                className="circlecheckcolor"
+                                onClick={() => handleCircleClick(item.id)}
+                              />
+                            )}
+                          </span>
+                          <span
+                            className={`${"itemName"} ${item.status === "Complete" ? "complete" : ""}`}
+                          >
+                            {" "}
+                            {item.todo}{" "}
+                          </span>
+                          <button className="inpUpdate">
+                            {item.status === "Pending" && (
+                              <Edit onClick={() => handleEdit(item)} />
+                            )}
+                          </button>
+                          <button
+                            className="inpDel"
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            <Trash />
+                          </button>
+                        </li>
+                      </>
+                    )}
                   </>
                 );
               })}
